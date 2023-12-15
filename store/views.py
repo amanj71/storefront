@@ -13,8 +13,19 @@ def product_list(request):
     serializer = ProductSerializer(queryset, many=True)
     return Response(serializer.data)
 
-@api_view()
+@api_view(['GET', 'POST'])
 def product_detail(request, id):
-    product = get_object_or_404(Product, pk=id)
-    serializer = ProductSerializer(product)
-    return Response(serializer.data)
+    if request.method == "GET":
+        product = get_object_or_404(Product, pk=id)
+        serializer = ProductSerializer(product)
+        return Response(serializer.data)
+    elif request.method == "POST":
+        serializer = ProductSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.validated_data
+        return Response("OK BABE")
+
+
+@api_view()
+def collection_detail(request, id):
+    return Response("ok")
